@@ -23,8 +23,11 @@ from homeassistant.util.unit_conversion import TemperatureConverter
 from . import SensiConfigEntry, get_config_option
 from .client import raise_if_error
 from .const import (
+    ATTR_AUX_STAGE,
     ATTR_CIRCULATING_FAN,
     ATTR_CIRCULATING_FAN_DUTY_CYCLE,
+    ATTR_COOL_STAGE,
+    ATTR_HEAT_STAGE,
     ATTR_POWER_STATUS,
     CONFIG_FAN_SUPPORT,
     DEFAULT_CONFIG_FAN_SUPPORT,
@@ -36,10 +39,6 @@ from .const import (
     SENSI_FAN_ON,
     TEMPERATURE_LOWER_LIMIT,
     TEMPERATURE_UPPER_LIMIT,
-    ATTR_HEAT_STAGE,
-    ATTR_AUX_STAGE,
-    ATTR_COOL_STAGE,
-    ATTR_FAN_STATE,
 )
 from .data import (
     FanMode,
@@ -104,12 +103,12 @@ class SensiThermostat(SensiEntity, ClimateEntity):
         # If demand_status exists, add staging data
         if demand_status:
             attrs.update({
-                ATTR_HEAT_STAGE: demand_status.heat,
                 ATTR_AUX_STAGE: demand_status.aux,
                 ATTR_COOL_STAGE: demand_status.cool,
+                ATTR_HEAT_STAGE: demand_status.heat,
             })
 
-        return attrs        
+        return attrs
 
     @property
     def name(self) -> str:
